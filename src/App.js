@@ -9,7 +9,7 @@ import Contact from "./pages/Contact";
 import Certificate from "./pages/Certificate";
 import "./App.css";
 import { useEffect, useState } from "react";
-import Resume from "./pages/Resume";
+import CV from "./pages/CV";
 import LoadingScreen from 'react-loading-screen'
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/experience" element={<Experience/>} />
             <Route path="/cert" element={<Certificate />} />
-            <Route path="/cv" element={<Resume />} />
+            <Route path="/cv" element={<CV />} />
           </Routes>
         )}
     </>

@@ -1,0 +1,154 @@
+.cv-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.cv-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #eee;
+}
+
+.cv-header h1 {
+    font-size: 2.5rem;
+    color: #FF4500;
+    margin-bottom: 0.5rem;
+}
+
+.cv-header .title {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.cv-contact {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.cv-contact a {
+    color: #FF4500;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cv-section {
+    margin-bottom: 2rem;
+}
+
+.cv-section h2 {
+    color: #FF4500;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.cv-item {
+    margin-bottom: 1.5rem;
+}
+
+.cv-item h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.cv-item .subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.cv-item .date {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.cv-item p {
+    color: #444;
+    line-height: 1.6;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.skill-item {
+    background: #f8f8f8;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Dark mode styles */
+.dark-content .cv-container {
+    background: #1a1a1a;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.dark-content .cv-header h1 {
+    color: #FF4500;
+}
+
+.dark-content .cv-header .title {
+    color: #ccc;
+}
+
+.dark-content .cv-section h2 {
+    color: #FF4500;
+    border-bottom-color: #333;
+}
+
+.dark-content .cv-item h3 {
+    color: #fff;
+}
+
+.dark-content .cv-item .subtitle {
+    color: #ccc;
+}
+
+.dark-content .cv-item .date {
+    color: #888;
+}
+
+.dark-content .cv-item p {
+    color: #ddd;
+}
+
+.dark-content .skill-item {
+    background: #252525;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .cv-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .cv-header h1 {
+        font-size: 2rem;
+    }
+
+    .cv-contact {
+        gap: 1rem;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+} 
