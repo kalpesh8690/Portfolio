@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef } from 'react';
+import { FaGraduationCap, FaCalendarAlt, FaMapMarkerAlt, FaTrophy } from 'react-icons/fa';
 import "../css/edu.css";
 import {
   Pen,
@@ -10,184 +11,122 @@ import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { shallowEqual } from "react-redux";
 
-
-function Education() {
+const Education = () => {
+  const timelineRef = useRef(null);
   const mode = useSelector((state) => state.counterReducer, shallowEqual);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+      }
+    );
+
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    timelineItems.forEach((item) => observer.observe(item));
+
+    return () => {
+      timelineItems.forEach((item) => observer.unobserve(item));
+    };
+  }, []);
 
   const CertMore = () => {
     navigate("/cert");
   };
+
+  const educationData = [
+    {
+      degree: "Bachelor of Engineering in Information Technology",
+      institution: "Gujarat Technological University",
+      location: "Ahmedabad, Gujarat",
+      duration: "2019 - 2023",
+      description: "Completed B.E. in Information Technology with a focus on web development, database management, and software engineering principles.",
+      achievements: [
+        "Maintained a CGPA of 8.5 throughout the program",
+        "Led the college's web development team",
+        "Completed multiple projects using MERN stack",
+        "Participated in various hackathons and coding competitions"
+      ]
+    },
+    {
+      degree: "Higher Secondary Education (12th)",
+      institution: "Gujarat Secondary Education Board",
+      location: "Ahmedabad, Gujarat",
+      duration: "2017 - 2019",
+      description: "Completed HSC with Science stream, focusing on Physics, Chemistry, and Mathematics. Developed strong analytical and problem-solving skills.",
+      achievements: [
+        "Scored 85% in board examinations",
+        "Active participant in science exhibitions",
+        "Won first prize in state-level coding competition",
+        "Member of school's science club"
+      ]
+    },
+    {
+      degree: "Secondary Education (10th)",
+      institution: "Gujarat Secondary Education Board",
+      location: "Ahmedabad, Gujarat",
+      duration: "2016 - 2017",
+      description: "Completed SSC with distinction, laying the foundation for further technical education. Developed strong fundamentals in mathematics and sciences.",
+      achievements: [
+        "Scored 92% in board examinations",
+        "School topper in Mathematics and Science",
+        "Received merit scholarship",
+        "Active participant in academic competitions"
+      ]
+    }
+  ];
+
   return (
-    <>
-      <div className="edu-main">
-        <div className="edu-title-main">
-          <p
-            
-            className="edu-name-p"
-          >
-            <Pen color="orange" size={40} />
-            Education & <span className="edu-name-span">Certificates</span>
-          </p>
-        </div>
-        <div className="uni-main">
-          <div
-            
-            className="uni-con"
-          >
-            <img className="uni-logo" src="./mkbhu.png" />
-            <p className="uni-name">
-              Maharaja Krishnakumarsinhji{" "}
-              <span className="uni-name-span">Bhavnagar University</span>
-            </p>
-          </div>
-        </div>
+    <div className="education-container">
+      <header className="education-header">
+        <h1>Education <span className="highlight">Journey</span></h1>
+        <p>My academic background and achievements that shaped my career path</p>
+      </header>
 
-        <div className="edu-card">
-          <div
-            
-            className="clg-con"
-          >
-            <p
-              style={mode === true ? { color: "white" } : { color: "black" }}
-              className="clg-name"
-            >
-              Smt ks kapasi <span className="uni-name-span">BCA</span> college
-              palitana
-            </p>
-          </div>
-
-          <div className="course-main">
-            <div className="course-detail">
-              <p
-                
-                className="c-p course"
-              >
+      <div className="timeline" ref={timelineRef}>
+        {educationData.map((edu, index) => (
+          <div key={index} className="timeline-item">
+            <div className="timeline-dot">
+              <FaGraduationCap />
+            </div>
+            <div className="timeline-content">
+              <h2>{edu.degree}</h2>
+              <h3>{edu.institution}</h3>
+              <div className="timeline-info">
                 <span>
-                  <Book color="orange" size={40} />
+                  <FaCalendarAlt /> {edu.duration}
                 </span>
-                Bachelor <span className="of"> Of </span> Computer
-                Application(BCA)
-              </p>
-              <p
-                
-             
-                className="c-p date u-case"
-              >
-                Jun-2019
-              </p>
-              <p className="c-p to">To</p>
-              <p
-               
-                className="c-p date u-case"
-              >
-                May-2022
-              </p>
-              <p
-                
-                className="c-p u-case s-20"
-              >
-                <AwardFill color="red" size={20} />
-                First Class
-              </p>
-            </div>
-
-            <div className="edu-logo-main">
-              <img
-                
-                className="edu-logo"
-                src="edu.png"
-              ></img>
-            </div>
-          </div>
-        </div>
-        <div className="cert-main">
-          <div className="cert-logo-con">
-            <img
-              
-              className="cert-logo"
-              src="cert.png"
-            ></img>
-          </div>
-          <div className="cert-detail-main">
-            <div
-              
-              className="cert-head-main"
-            >
-              <p className="cert-by c-p u-case">
-                Certificate <span style={{ color: "orange" }}> BY</span>{" "}
-              </p>
-              <img className="sololearn-logo" src="./solo.png" />
-            </div>
-            <div className="cert-solo-main">
-              <div
-                
-                className="cert-solo"
-              >
-                <img className="cert-logos" src="./react+redux.jpeg"></img>
-                <h1 className="cert-name">React+Redux</h1>
-                <div className="cert-data">
-                  <p>Issued Aug 2022</p>
-                  <p>CT-X9Z9MFK2</p>
-                </div>
-                <div className="cert-links">
-                  <a
-                    className="cert-link-btn"
-                    style={
-                      mode === true ? { color: "white" } : { color: "black" }
-                    }
-                    href="https://www.sololearn.com/Certificate/1097-386568/pdf/"
-                  >
-                    Show credential
-                  </a>
-                </div>
+                <span>
+                  <FaMapMarkerAlt /> {edu.location}
+                </span>
               </div>
-              <div
-                
-                className="cert-solo"
-              >
-                <img className="cert-logos" src="./html5.png"></img>
-                <h1 className="cert-name">HTML5</h1>
-                <div className="cert-data">
-                  <p>Issued Aug 2022</p>
-                  <p>CT-SY17B8OQ</p>
-                </div>
-
-                <div className="cert-links">
-                  <a
-                    className="cert-link-btn"
-                    style={
-                      mode === true ? { color: "white" } : { color: "black" }
-                    }
-                    href="https://www.sololearn.com/Certificate/1014-386568/pdf/"
-                  >
-                    Show credential
-                  </a>
-                </div>
-              </div>
-
-              <div className="cert-links m-full">
-                <Button className="cert-link-btn" onClick={() => CertMore()}>
-                  Other...
-                </Button>
+              <p>{edu.description}</p>
+              <div className="achievements">
+                <h4>
+                  <FaTrophy style={{ marginRight: '8px', color: '#FF4500' }} />
+                  Key Achievements
+                </h4>
+                <ul>
+                  {edu.achievements.map((achievement, i) => (
+                    <li key={i}>{achievement}</li>
+                  ))}
+                </ul>
               </div>
             </div>
-            <p
-              
-              className="type-fix mt-20 s-20 "
-            >
-              As a wise man once said:<br></br>
-              "Your work is going to fill a large part of your life, and the
-              only way to be truly satisfied is to do what you believe is great
-              work. And the only way to do great work is to love what you do. If
-              you haven't found it yet, keep looking. Don't settle. As with all
-              matters of the heart, you'll know when you find it." - Steve Jobs
-            </p>
           </div>
-        </div>
+        ))}
       </div>
-    </>
+    </div>
   );
-}
+};
 
 export default Education;

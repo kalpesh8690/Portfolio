@@ -9,8 +9,8 @@ function Hero() {
   return (
     <>
         <Home/>
-        <Skill/>
-        <Education/>
+        {/* <Skill/>
+        <Education/> */}
         <About/>  
     </>
   );

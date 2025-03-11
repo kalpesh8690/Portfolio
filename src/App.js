@@ -11,6 +11,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import CV from "./pages/CV";
 import LoadingScreen from 'react-loading-screen'
+import Home from "./pages/Home";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/experience" element={<Experience/>} />
             <Route path="/cert" element={<Certificate />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/cv" element={<CV />} />
           </Routes>
         )}
