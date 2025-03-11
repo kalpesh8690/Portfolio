@@ -1,0 +1,43 @@
+/* Smooth transitions for theme changes */
+.MuiAppBar-root {
+  transition: all 0.3s ease !important;
+}
+
+/* Menu animation */
+.MuiMenu-paper {
+  animation: menuSlideIn 0.2s ease forwards !important;
+}
+
+@keyframes menuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Active link styles */
+.active .MuiButton-startIcon {
+  transform: scale(1.1);
+}
+
+/* Logo hover animation */
+.logo-icon {
+  transition: transform 0.3s ease !important;
+}
+
+/* Theme toggle animation */
+.MuiIconButton-root {
+  transition: all 0.3s ease !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .MuiContainer-root {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+} 
