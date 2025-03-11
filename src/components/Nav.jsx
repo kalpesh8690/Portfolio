@@ -75,7 +75,7 @@ const Nav = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: isDarkMode ? 'rgba(21, 34, 56, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+          bgcolor: isDarkMode ? 'rgba(21, 21, 21, 0.95)' : 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(10px)',
           borderBottom: 1,
           borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'

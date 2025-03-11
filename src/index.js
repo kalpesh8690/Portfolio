@@ -5,7 +5,7 @@ import Nav from "./components/Nav";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import Footer from "./component/Footer";
+import Footer from "./components/Footer";
 import ThemeContextWrapper from "./theme/ThemeContextWrapper";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";

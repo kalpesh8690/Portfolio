@@ -1,0 +1,77 @@
+.contact-container {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form field animations */
+.MuiTextField-root {
+  transition: transform 0.3s ease;
+}
+
+.MuiTextField-root:focus-within {
+  transform: scale(1.01);
+}
+
+/* Custom scrollbar for the message textarea */
+.MuiTextField-root textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.MuiTextField-root textarea::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.MuiTextField-root textarea::-webkit-scrollbar-thumb {
+  background: orange;
+  border-radius: 4px;
+}
+
+/* Paper hover effect */
+.MuiPaper-root {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.MuiPaper-root:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact info hover animations */
+.contact-info-item {
+  transition: all 0.3s ease;
+}
+
+.contact-info-item:hover {
+  transform: translateX(8px);
+}
+
+/* Social icons pulse animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.social-icon:hover {
+  animation: pulse 1s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .contact-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .MuiPaper-root {
+    padding: 1.5rem !important;
+  }
+} 

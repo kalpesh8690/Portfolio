@@ -32,7 +32,11 @@
   }
   
   ul li {
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
+  }
+  
+  ul li:last-child {
+    margin-bottom: 0;
   }
   
   .card {
@@ -69,4 +73,101 @@
     .card-title {
       font-size: 18px;
     }
+  }
+
+  /* Timeline customization */
+  .MuiTimeline-root {
+    padding: 0;
+  }
+
+  .MuiTimelineItem-root:before {
+    display: none;
+  }
+
+  .MuiTimelineConnector-root {
+    background-color: orange;
+    width: 2px;
+  }
+
+  /* Paper hover effects */
+  .MuiPaper-root {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .MuiPaper-root:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Skill bar animations */
+  @keyframes growBar {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .MuiLinearProgress-bar {
+    transform-origin: left;
+    animation: growBar 1s ease-out forwards;
+  }
+
+  /* Download button hover effect */
+  .download-btn {
+    transition: all 0.3s ease;
+  }
+
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .MuiContainer-root {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .MuiPaper-root {
+      padding: 1.5rem !important;
+    }
+
+    .MuiTypography-h2 {
+      font-size: 2.5rem !important;
+    }
+  }
+
+  /* Timeline content fade-in */
+  .timeline-content {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Skill category hover effect */
+  .skill-category {
+    transition: all 0.3s ease;
+  }
+
+  .skill-category:hover {
+    transform: translateX(8px);
+  }
+
+  /* Progress bar hover effect */
+  .MuiLinearProgress-root {
+    transition: all 0.3s ease;
+  }
+
+  .MuiLinearProgress-root:hover {
+    transform: scaleY(1.2);
   }
