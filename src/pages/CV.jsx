@@ -89,8 +89,13 @@ const CV = () => {
   };
 
   const handleDownloadCV = () => {
-    const cvUrl = '/resume.pdf';
-    window.open(cvUrl, '_blank');
+   const resumeUrl = '/cv.pdf'; // Ensure this path matches your public folder
+       const link = document.createElement('a');
+       link.href = resumeUrl;
+       link.download = 'Kalpesh_Kapasi_CV.pdf'; // Set the desired file name
+       document.body.appendChild(link);
+       link.click();
+       document.body.removeChild(link);
   };
 
   return (

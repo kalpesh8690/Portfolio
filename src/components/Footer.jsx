@@ -25,17 +25,17 @@ const Footer = () => {
     {
       name: 'GitHub',
       icon: GitHubIcon,
-      url: 'https://github.com/kalpesh-b-patel',
+      url: 'https://github.com/kalpesh8690',
     },
     {
       name: 'LinkedIn',
       icon: LinkedInIcon,
-      url: 'https://www.linkedin.com/in/kalpesh-b-patel/',
+      url: 'https://www.linkedin.com/in/kalpesh8690/',
     },
     {
       name: 'Email',
       icon: EmailIcon,
-      url: 'mailto:kalpeshpatel.jobs@gmail.com',
+      url: 'mailto:chauhankalpesh760@gmail.com',
     },
   ];
 
@@ -69,7 +69,7 @@ const Footer = () => {
             }}
           >
             <CopyrightIcon fontSize="small" />
-            {currentYear} Kalpesh Patel. All rights reserved.
+            {currentYear} Kalpesh Chauhan. All rights reserved.
           </Typography>
 
           <Stack

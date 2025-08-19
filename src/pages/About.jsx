@@ -1,7 +1,17 @@
 import React, { useEffect, useRef } from 'react';
-import { FaCode, FaLaptopCode, FaMobileAlt, FaServer, FaDatabase, FaTools } from 'react-icons/fa';
-import { SiWebpack, SiDocker } from 'react-icons/si';
-import { Instagram, LinkedIn, Facebook, WhatsApp, GitHub } from '@mui/icons-material';
+import {
+  Code as CodeIcon,
+  LaptopMac as LaptopMacIcon,
+  PhoneIphone as PhoneIphoneIcon,
+  Dns as DnsIcon,
+  Storage as StorageIcon,
+  Build as BuildIcon,
+  Instagram,
+  LinkedIn,
+  Facebook,
+  WhatsApp,
+  GitHub,
+} from '@mui/icons-material';
 import '../css/about.css';
 
 const About = () => {
@@ -39,25 +49,41 @@ const About = () => {
     }
   };
 
+  // Inline SVGs for Webpack & Docker
+  const WebpackIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28">
+      <path fill="#8DD6F9" d="M256 0L512 128v256L256 512 0 384V128z" />
+    </svg>
+  );
+
+  const DockerIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="28" height="28">
+      <path
+        fill="#0db7ed"
+        d="M349.5 236.5h-55.4v-48.4h55.4zm0-61.9h-55.4v-48.4h55.4zM285.8 174.6h-55.4v-48.4h55.4zm0 61.9h-55.4v-48.4h55.4zM222 236.5h-55.4v-48.4H222zm63.8 61.9h-55.4V250h55.4zm63.7 0h-55.4V250h55.4zM413 236.5h-55.4v-48.4H413z"
+      />
+    </svg>
+  );
+
   const skills = [
     {
       category: "Frontend Development",
-      icon: <FaLaptopCode />,
+      icon: <LaptopMacIcon />,
       items: ["React.js", "Next.js", "TypeScript", "Redux", "Material-UI", "Tailwind CSS"]
     },
     {
       category: "Backend Development",
-      icon: <FaServer />,
+      icon: <DnsIcon />,
       items: ["Node.js", "Express.js", "RESTful APIs", "GraphQL", "WebSocket"]
     },
     {
       category: "Database",
-      icon: <FaDatabase />,
+      icon: <StorageIcon />,
       items: ["MongoDB", "PostgreSQL", "Redis", "Firebase"]
     },
     {
       category: "DevOps & Tools",
-      icon: <FaTools />,
+      icon: <BuildIcon />,
       items: ["Git", "Docker", "AWS", "CI/CD", "Jest", "Webpack"]
     }
   ];
@@ -65,22 +91,22 @@ const About = () => {
   const interests = [
     {
       title: "Web Development",
-      icon: <FaCode />,
+      icon: <CodeIcon />,
       description: "Building modern, responsive web applications with cutting-edge technologies."
     },
     {
       title: "Mobile Development",
-      icon: <FaMobileAlt />,
+      icon: <PhoneIphoneIcon />,
       description: "Creating cross-platform mobile applications using React Native."
     },
     {
       title: "System Architecture",
-      icon: <SiWebpack />,
+      icon: <WebpackIcon />,
       description: "Designing scalable and maintainable software architectures."
     },
     {
       title: "Cloud Technologies",
-      icon: <SiDocker />,
+      icon: <DockerIcon />,
       description: "Working with cloud platforms and containerization technologies."
     }
   ];

@@ -79,21 +79,21 @@ const Contact = () => {
     {
       icon: EmailIcon,
       label: 'Email',
-      value: 'kalpeshpatel.jobs@gmail.com',
-      link: 'mailto:kalpeshpatel.jobs@gmail.com',
+      value: 'chauhankalpesh760@gmail.com',
+      link: 'mailto:chauhankalpesh760@gmail.com',
     },
     {
       icon: PhoneIcon,
       label: 'Phone',
-      value: '+1 (437) 981-1227',
-      link: 'tel:+14379811227',
+      value: '+918690361133',
+      link: 'tel:+918690361133',
     },
-    {
-      icon: LocationIcon,
-      label: 'Location',
-      value: 'Toronto, ON, Canada',
-      link: 'https://maps.google.com/?q=Toronto,ON',
-    },
+    // {
+    //   icon: LocationIcon,
+    //   label: 'Location',
+    //   value: 'Toronto, ON, Canada',
+    //   link: 'https://maps.google.com/?q=Toronto,ON',
+    // },
   ];
 
   const socialLinks = [

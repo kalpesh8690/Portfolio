@@ -1,15 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import { FaGraduationCap, FaCalendarAlt, FaMapMarkerAlt, FaTrophy } from 'react-icons/fa';
 import "../css/edu.css";
 import {
-  Pen,
-  Book,
-  AwardFill,
-} from "react-bootstrap-icons";
+  School as SchoolIcon,
+  CalendarToday as CalendarTodayIcon,
+  LocationOn as LocationOnIcon,
+  EmojiEvents as EmojiEventsIcon,
+} from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
-import { shallowEqual } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 
 const Education = () => {
   const timelineRef = useRef(null);
@@ -49,46 +48,51 @@ const Education = () => {
       institution: "Gujarat Technological University",
       location: "Ahmedabad, Gujarat",
       duration: "2019 - 2023",
-      description: "Completed B.E. in Information Technology with a focus on web development, database management, and software engineering principles.",
+      description:
+        "Completed B.E. in Information Technology with a focus on web development, database management, and software engineering principles.",
       achievements: [
         "Maintained a CGPA of 8.5 throughout the program",
         "Led the college's web development team",
         "Completed multiple projects using MERN stack",
-        "Participated in various hackathons and coding competitions"
-      ]
+        "Participated in various hackathons and coding competitions",
+      ],
     },
     {
       degree: "Higher Secondary Education (12th)",
       institution: "Gujarat Secondary Education Board",
       location: "Ahmedabad, Gujarat",
       duration: "2017 - 2019",
-      description: "Completed HSC with Science stream, focusing on Physics, Chemistry, and Mathematics. Developed strong analytical and problem-solving skills.",
+      description:
+        "Completed HSC with Science stream, focusing on Physics, Chemistry, and Mathematics. Developed strong analytical and problem-solving skills.",
       achievements: [
         "Scored 85% in board examinations",
         "Active participant in science exhibitions",
         "Won first prize in state-level coding competition",
-        "Member of school's science club"
-      ]
+        "Member of school's science club",
+      ],
     },
     {
       degree: "Secondary Education (10th)",
       institution: "Gujarat Secondary Education Board",
       location: "Ahmedabad, Gujarat",
       duration: "2016 - 2017",
-      description: "Completed SSC with distinction, laying the foundation for further technical education. Developed strong fundamentals in mathematics and sciences.",
+      description:
+        "Completed SSC with distinction, laying the foundation for further technical education. Developed strong fundamentals in mathematics and sciences.",
       achievements: [
         "Scored 92% in board examinations",
         "School topper in Mathematics and Science",
         "Received merit scholarship",
-        "Active participant in academic competitions"
-      ]
-    }
+        "Active participant in academic competitions",
+      ],
+    },
   ];
 
   return (
     <div className="education-container">
       <header className="education-header">
-        <h1>Education <span className="highlight">Journey</span></h1>
+        <h1>
+          Education <span className="highlight">Journey</span>
+        </h1>
         <p>My academic background and achievements that shaped my career path</p>
       </header>
 
@@ -96,23 +100,23 @@ const Education = () => {
         {educationData.map((edu, index) => (
           <div key={index} className="timeline-item">
             <div className="timeline-dot">
-              <FaGraduationCap />
+              <SchoolIcon />
             </div>
             <div className="timeline-content">
               <h2>{edu.degree}</h2>
               <h3>{edu.institution}</h3>
               <div className="timeline-info">
                 <span>
-                  <FaCalendarAlt /> {edu.duration}
+                  <CalendarTodayIcon sx={{ fontSize: 16, mr: 0.5 }} /> {edu.duration}
                 </span>
                 <span>
-                  <FaMapMarkerAlt /> {edu.location}
+                  <LocationOnIcon sx={{ fontSize: 16, mr: 0.5 }} /> {edu.location}
                 </span>
               </div>
               <p>{edu.description}</p>
               <div className="achievements">
                 <h4>
-                  <FaTrophy style={{ marginRight: '8px', color: '#FF4500' }} />
+                  <EmojiEventsIcon sx={{ mr: 1, color: '#FF4500' }} />
                   Key Achievements
                 </h4>
                 <ul>

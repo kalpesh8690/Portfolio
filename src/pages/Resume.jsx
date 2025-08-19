@@ -96,9 +96,8 @@ const Resume = () => {
   };
 
   const handleDownloadResume = () => {
-    // Replace with your resume PDF URL
-    const resumeUrl = '/resume.pdf';
-    window.open(resumeUrl, '_blank');
+    
+    console.log("Download Resume Clicked");
   };
 
   return (
