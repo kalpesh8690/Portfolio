@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import emailjs from "@emailjs/browser";
 import "./App.css";
 
 const skills = [
@@ -23,6 +24,7 @@ function App() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [roleIndex, setRoleIndex] = useState(0);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [formStatus, setFormStatus] = useState({ type: "", message: "" });
 
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
@@ -38,11 +40,24 @@ function App() {
     [activeFilter]
   );
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const subject = encodeURIComponent("Portfolio enquiry from " + form.name);
-    const body = encodeURIComponent("Name: " + form.name + "\nEmail: " + form.email + "\n\n" + form.message);
-    window.location.href = "mailto:kalpeshchauhan.dev@gmail.com?subject=" + subject + "&body=" + body;
+    setFormStatus({ type: "loading", message: "Sending your message…" });
+    const nameParts = form.name.trim().split(/\\s+/);
+    const data = {
+      firstname: nameParts.shift() || "",
+      lastname: nameParts.join(" "),
+      email: form.email,
+      mobile: "",
+      massage: form.message
+    };
+    try {
+      await emailjs.send("service_ws78up5", "template_9742swp", data, "oj4lKfX0MYT7JQlEO");
+      setFormStatus({ type: "success", message: "Message sent successfully. Thanks for reaching out!" });
+      setForm({ name: "", email: "", message: "" });
+    } catch (error) {
+      setFormStatus({ type: "error", message: "Your message could not be sent. Please use the WhatsApp or GitHub link instead." });
+    }
   };
 
   return (
@@ -103,7 +118,7 @@ function App() {
 
         <section className="experience-section" id="experience"><div className="section-wrap content-section"><div className="section-kicker">04 / EXPERIENCE & APPROACH</div><div className="experience-grid"><div><h2 className="section-heading">Thoughtful work.<br /><span className="muted-heading">Steady growth.</span></h2><p className="section-intro">I bring a hands-on mindset to the full development cycle—from understanding a requirement to shipping and improving the solution.</p><a className="text-link" href="/cv.pdf" target="_blank" rel="noreferrer">Open résumé <span>↗</span></a></div><div className="timeline"><article className="timeline-item"><span className="timeline-dot" /><span className="timeline-label">FRONTEND ENGINEERING</span><h3>Interfaces people can use</h3><p>Build responsive React experiences with reusable components, consistent styling, and accessible controls.</p></article><article className="timeline-item"><span className="timeline-dot" /><span className="timeline-label">BACKEND DEVELOPMENT</span><h3>APIs that do the heavy lifting</h3><p>Develop Node.js services and integrations, with attention to validation, reliability, and clear data contracts.</p></article><article className="timeline-item"><span className="timeline-dot" /><span className="timeline-label">DATA & PERFORMANCE</span><h3>Make the data flow better</h3><p>Work with MongoDB and SQL databases, optimize queries, and investigate slow or resource-intensive workflows.</p></article></div></div></div></section>
 
-        <section className="contact-section" id="contact"><div className="section-wrap content-section"><div className="section-kicker">05 / CONTACT</div><div className="contact-grid"><div className="contact-copy"><h2 className="section-heading">Have a good<br />problem? <span className="gradient-text">Let's solve it.</span></h2><p>Have a project in mind, an opportunity, or just want to talk tech? Send a message and let's start a conversation.</p><a className="contact-email" href="mailto:kalpeshchauhan.dev@gmail.com">kalpeshchauhan.dev@gmail.com <span>↗</span></a><div className="contact-socials"><a href="https://github.com/kalpesh8690" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://kalpeshchauhan.vercel.app" target="_blank" rel="noreferrer">Portfolio ↗</a></div></div><form className="contact-form" onSubmit={handleSubmit}><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" placeholder="How should I call you?" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /><label htmlFor="message">What are you thinking?</label><textarea id="message" name="message" rows="4" placeholder="A little context about your project or idea..." required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /><button className="button button-primary form-submit" type="submit">Compose email <span>↗</span></button><p className="form-note">This opens your default email app with your message prepared.</p></form></div></div></section>
+        <section className="contact-section" id="contact"><div className="section-wrap content-section"><div className="section-kicker">05 / CONTACT</div><div className="contact-grid"><div className="contact-copy"><h2 className="section-heading">Have a good<br />problem? <span className="gradient-text">Let's solve it.</span></h2><p>Have a project in mind, an opportunity, or just want to talk tech? Send a message and let's start a conversation.</p><a className="contact-email" href="https://api.whatsapp.com/send?phone=918690361133&text=Hello%20Kalpesh" target="_blank" rel="noreferrer">Message me on WhatsApp <span>↗</span></a><div className="contact-socials"><a href="https://github.com/kalpesh8690" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://kalpeshchauhan.vercel.app" target="_blank" rel="noreferrer">Portfolio ↗</a></div></div><form className="contact-form" onSubmit={handleSubmit}><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" placeholder="How should I call you?" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /><label htmlFor="message">What are you thinking?</label><textarea id="message" name="message" rows="4" placeholder="A little context about your project or idea..." required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /><button className="button button-primary form-submit" type="submit" disabled={formStatus.type === "loading"}>{formStatus.type === "loading" ? "Sending…" : "Send message"} <span>↗</span></button>{formStatus.message && <p className={"form-note form-status " + formStatus.type} role="status">{formStatus.message}</p>}<p className="form-note">Your message is sent securely through the portfolio contact service.</p></form></div></div></section>
       </main>
       <footer className="site-footer"><a className="brand footer-brand" href="#home"><span className="brand-mark">K<span>.</span></span><span className="brand-name">kalpesh<span>.dev</span></span></a><span>Designed with care · Built with React</span><a href="#home" className="back-top">BACK TO TOP ↑</a><span className="copyright">© {new Date().getFullYear()} Kalpesh Chauhan</span></footer>
     </div>
