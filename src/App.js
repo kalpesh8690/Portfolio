@@ -43,7 +43,7 @@ function App() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setFormStatus({ type: "loading", message: "Sending your message…" });
-    const nameParts = form.name.trim().split(/\\s+/);
+    const nameParts = form.name.trim().split(" ").filter(Boolean);
     const data = {
       firstname: nameParts.shift() || "",
       lastname: nameParts.join(" "),
