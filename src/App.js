@@ -1,53 +1,112 @@
-import React from "react";
-import Hero from "./component/Hero";
-import Skill from "./pages/Skill";
-import Education from "./pages/Education";
-import Experience from "./pages/Experience";
-import { Routes, Route } from "react-router-dom";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Certificate from "./pages/Certificate";
+import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import { useEffect, useState } from "react";
-import Resume from "./pages/Resume";
-import LoadingScreen from 'react-loading-screen'
+
+const skills = [
+  { group: "Frontend", items: ["React.js", "JavaScript", "HTML5", "CSS3", "Tailwind CSS", "Material UI"] },
+  { group: "Backend", items: ["Node.js", "Express.js", "REST APIs", "Authentication", "MERN / MEVN / SERN"] },
+  { group: "Database", items: ["MongoDB", "MySQL", "SQL Server", "Stored Procedures", "Query Optimization"] },
+  { group: "Tools & delivery", items: ["Git & GitHub", "Docker", "Postman", "IIS", "API Performance"] },
+];
+const projects = [
+  { name: "MRK Storage", type: "Web app", description: "A web experience focused on clear content, practical navigation, and responsive presentation.", stack: ["React", "Web UI"], live: "https://mrkstorage.vercel.app", code: "https://github.com/kalpesh8690" },
+  { name: "Developer Portfolio", type: "Web app", description: "A personal portfolio showcasing development experience, skills, selected work, and contact options.", stack: ["React", "JavaScript", "CSS"], live: "https://kalpeshchauhan.vercel.app", code: "https://github.com/kalpesh8690/Portfolio" },
+  { name: "Business dashboards & APIs", type: "Backend", description: "Backend-focused work with REST APIs, relational databases, data processing, and admin workflows.", stack: ["Node.js", "MySQL", "SQL Server"], live: "", code: "https://github.com/kalpesh8690" },
+];
+const roles = ["Full-Stack Developer", "React & Node.js Developer", "API & Database Developer"];
+const navItems = [["Home", "home"], ["About", "about"], ["Skills", "skills"], ["Work", "work"], ["Experience", "experience"], ["Contact", "contact"]];
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [dark, setDark] = useState(() => {
+    try { return localStorage.getItem("portfolio-theme") !== "light"; } catch { return true; }
+  });
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    try { localStorage.setItem("portfolio-theme", dark ? "dark" : "light"); } catch {}
+  }, [dark]);
+  useEffect(() => {
+    const timer = window.setInterval(() => setRoleIndex((n) => (n + 1) % roles.length), 2800);
+    return () => window.clearInterval(timer);
   }, []);
+
+  const filteredProjects = useMemo(
+    () => activeFilter === "All" ? projects : projects.filter((p) => p.type === activeFilter),
+    [activeFilter]
+  );
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const subject = encodeURIComponent("Portfolio enquiry from " + form.name);
+    const body = encodeURIComponent("Name: " + form.name + "\nEmail: " + form.email + "\n\n" + form.message);
+    window.location.href = "mailto:kalpeshchauhan.dev@gmail.com?subject=" + subject + "&body=" + body;
+  };
+
   return (
-    <>
-        {loading ? (
-          <LoadingScreen
-          loading={true}
-          bgColor='#f1f1f1'
-          spinnerColor='#9ee5f8'
-          textColor='#676767'
-          logoSrc='/logo512.png'
-          text='Loading...'
-        > 
-        </LoadingScreen>
-        ) : (
-          <Routes>
-            <Route excat path="/" element={<Hero />}>
-              <Route path="/skill" element={<Skill />} />
-              <Route path="/education" element={<Education />} />
-              <Route path="/about" element={<About />} />
-            </Route>
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/experience" element={<Experience/>} />
-            <Route path="/cert" element={<Certificate />} />
-            <Route path="/cv" element={<Resume />} />
-          </Routes>
-        )}
-    </>
+    <div className="portfolio-shell">
+      <header className="site-header">
+        <a className="brand" href="#home" aria-label="Kalpesh Chauhan home"><span className="brand-mark">K<span>.</span></span><span className="brand-name">kalpesh<span>.dev</span></span></a>
+        <button className="menu-toggle" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((v) => !v)}>{menuOpen ? "✕" : "☰"}</button>
+        <nav className={menuOpen ? "main-nav is-open" : "main-nav"} aria-label="Main navigation">
+          {navItems.map(([label, id]) => <a key={id} href={"#" + id} onClick={() => setMenuOpen(false)}>{label}</a>)}
+        </nav>
+        <div className="header-actions">
+          <button className="theme-toggle" onClick={() => setDark((v) => !v)} aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}>{dark ? "☼" : "☾"}</button>
+          <a className="button button-small button-outline" href="#contact">Let's talk <span aria-hidden="true">↗</span></a>
+        </div>
+      </header>
+
+      <main>
+        <section className="hero section-wrap" id="home">
+          <div className="hero-copy">
+            <div className="eyebrow"><span className="status-dot" /> AVAILABLE FOR THE RIGHT OPPORTUNITY</div>
+            <h1>Building digital<br />experiences that <span className="gradient-text">work.</span></h1>
+            <p className="hero-lead">Hey, I'm <strong>Kalpesh Chauhan</strong> — a developer who turns complex problems into fast, thoughtful, and reliable web applications.</p>
+            <div className="role-line"><span className="role-prefix">I build as a</span> <span className="role-value">{roles[roleIndex]}</span><span className="caret">|</span></div>
+            <div className="hero-actions">
+              <a className="button button-primary" href="#work">Explore my work <span>↗</span></a>
+              <a className="button button-ghost" href="/cv.pdf" target="_blank" rel="noreferrer">View résumé <span>↓</span></a>
+            </div>
+            <div className="social-row"><a href="https://github.com/kalpesh8690" target="_blank" rel="noreferrer">GitHub ↗</a><span className="social-separator">/</span><a href="https://kalpeshchauhan.vercel.app" target="_blank" rel="noreferrer">Live portfolio ↗</a><span className="social-separator">/</span><a href="#contact">Get in touch ↗</a></div>
+          </div>
+          <div className="hero-visual" aria-label="Developer profile card">
+            <div className="visual-glow" />
+            <div className="orbit orbit-one" /><div className="orbit orbit-two" />
+            <div className="profile-card">
+              <div className="card-topline"><span className="window-dots"><i /><i /><i /></span><span>PROFILE / 001</span></div>
+              <div className="profile-image-wrap"><img src="/mypic.png" alt="Kalpesh Chauhan" onError={(e) => { e.currentTarget.style.display = "none"; }} /><div className="profile-fallback">KC</div></div>
+              <h2>Kalpesh Chauhan</h2><p className="profile-role">Full-Stack Developer</p>
+              <div className="profile-tags"><span>React</span><span>Node.js</span><span>SQL</span></div>
+              <div className="profile-bottom"><span><span className="status-dot" /> Building & learning</span><span className="profile-code">{"</>"}</span></div>
+            </div>
+            <div className="float-chip chip-top"><span className="chip-icon">✳</span><span><b>Clean code</b><small>Built to scale</small></span></div>
+            <div className="float-chip chip-bottom"><span className="chip-icon chip-icon-purple">⌘</span><span><b>Full-stack</b><small>UI to database</small></span></div>
+            <div className="visual-caption">DESIGN MINDFUL. ENGINEERING DRIVEN.</div>
+          </div>
+          <a className="scroll-cue" href="#about"><span className="scroll-line" /> SCROLL TO EXPLORE <span>↓</span></a>
+        </section>
+
+        <section className="trust-strip"><div className="trust-inner"><span className="strip-label">WORKING ACROSS THE STACK</span>{["React", "Node.js", "MongoDB", "MySQL", "SQL Server", "Docker"].map((s) => <span className="tech-word" key={s}>{s}</span>)}</div></section>
+
+        <section className="section-wrap content-section about-section" id="about">
+          <div className="section-kicker">01 / ABOUT ME</div>
+          <div className="about-grid"><div><h2 className="section-heading">Curious by nature.<br /><span className="muted-heading">Practical by design.</span></h2></div><div className="about-content"><p className="large-copy">I enjoy building products that feel simple on the surface and are thoughtfully engineered underneath.</p><p>My work spans frontend interfaces, backend APIs, database design, and performance troubleshooting. I care about maintainability, useful details, and making software that solves real problems—not just looks good in a screenshot.</p><a className="text-link" href="#contact">A little more about working together <span>↗</span></a></div></div>
+          <div className="stats-grid"><div className="stat-card"><span className="stat-number">01<span>—</span></span><span className="stat-label">Product-minded UI</span><p>Responsive interfaces with clear hierarchy and accessible interactions.</p></div><div className="stat-card"><span className="stat-number">02<span>—</span></span><span className="stat-label">Reliable backend</span><p>Maintainable APIs, thoughtful data flows, and useful integrations.</p></div><div className="stat-card"><span className="stat-number">03<span>—</span></span><span className="stat-label">Performance first</span><p>Diagnosing bottlenecks and improving how applications behave at scale.</p></div></div>
+        </section>
+
+        <section className="skills-section" id="skills"><div className="section-wrap content-section"><div className="section-kicker">02 / TOOLKIT</div><div className="section-title-row"><h2 className="section-heading">Tools I use to<br /><span className="muted-heading">make things happen.</span></h2><p className="section-intro">A practical toolkit across frontend, backend, data, and delivery. Always learning, always refining.</p></div><div className="skill-grid">{skills.map((group, index) => <article className="skill-card" key={group.group}><div className="skill-card-top"><span className="skill-index">0{index + 1}</span><span className="skill-symbol">{["◈", "⌘", "▤", "↗"][index]}</span></div><h3>{group.group}</h3><div className="skill-pills">{group.items.map((item) => <span key={item}>{item}</span>)}</div></article>)}</div></div></section>
+
+        <section className="section-wrap content-section work-section" id="work"><div className="section-kicker">03 / SELECTED WORK</div><div className="section-title-row"><h2 className="section-heading">A few things I've<br /><span className="muted-heading">worked on.</span></h2><p className="section-intro">A snapshot of personal work and the kind of problems I like to solve. Explore the live projects or browse the code.</p></div><div className="project-toolbar"><span className="project-count">{String(filteredProjects.length).padStart(2, "0")} PROJECTS</span><div className="filter-list">{["All", "Web app", "Backend"].map((filter) => <button key={filter} className={activeFilter === filter ? "filter-button active" : "filter-button"} onClick={() => setActiveFilter(filter)}>{filter}</button>)}</div></div><div className="project-grid">{filteredProjects.map((project, index) => <article className="project-card" key={project.name}><div className={"project-art art-" + (index % 3)}><div className="art-browser"><div className="art-browser-bar"><i /><i /><i /><span>{project.name.toLowerCase().replaceAll(" ", "-")}.app</span></div><div className="art-content"><span className="art-overline">FEATURED PROJECT / 0{index + 1}</span><div className="art-big-shape">{index === 0 ? "MRK" : index === 1 ? "KC." : "{ API }"}</div><div className="art-lines"><i /><i /><i /></div><div className="art-mini-cards"><i /><i /><i /></div></div></div><span className="project-type">{project.type}</span></div><div className="project-info"><div className="project-heading"><h3>{project.name}</h3><span className="project-arrow">↗</span></div><p>{project.description}</p><div className="project-stack">{project.stack.map((item) => <span key={item}>{item}</span>)}</div><div className="project-links">{project.live && <a href={project.live} target="_blank" rel="noreferrer">Live preview ↗</a>}<a href={project.code} target="_blank" rel="noreferrer">View code ↗</a></div></div></article>)}</div></section>
+
+        <section className="experience-section" id="experience"><div className="section-wrap content-section"><div className="section-kicker">04 / EXPERIENCE & APPROACH</div><div className="experience-grid"><div><h2 className="section-heading">Thoughtful work.<br /><span className="muted-heading">Steady growth.</span></h2><p className="section-intro">I bring a hands-on mindset to the full development cycle—from understanding a requirement to shipping and improving the solution.</p><a className="text-link" href="/cv.pdf" target="_blank" rel="noreferrer">Open résumé <span>↗</span></a></div><div className="timeline"><article className="timeline-item"><span className="timeline-dot" /><span className="timeline-label">FRONTEND ENGINEERING</span><h3>Interfaces people can use</h3><p>Build responsive React experiences with reusable components, consistent styling, and accessible controls.</p></article><article className="timeline-item"><span className="timeline-dot" /><span className="timeline-label">BACKEND DEVELOPMENT</span><h3>APIs that do the heavy lifting</h3><p>Develop Node.js services and integrations, with attention to validation, reliability, and clear data contracts.</p></article><article className="timeline-item"><span className="timeline-dot" /><span className="timeline-label">DATA & PERFORMANCE</span><h3>Make the data flow better</h3><p>Work with MongoDB and SQL databases, optimize queries, and investigate slow or resource-intensive workflows.</p></article></div></div></div></section>
+
+        <section className="contact-section" id="contact"><div className="section-wrap content-section"><div className="section-kicker">05 / CONTACT</div><div className="contact-grid"><div className="contact-copy"><h2 className="section-heading">Have a good<br />problem? <span className="gradient-text">Let's solve it.</span></h2><p>Have a project in mind, an opportunity, or just want to talk tech? Send a message and let's start a conversation.</p><a className="contact-email" href="mailto:kalpeshchauhan.dev@gmail.com">kalpeshchauhan.dev@gmail.com <span>↗</span></a><div className="contact-socials"><a href="https://github.com/kalpesh8690" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://kalpeshchauhan.vercel.app" target="_blank" rel="noreferrer">Portfolio ↗</a></div></div><form className="contact-form" onSubmit={handleSubmit}><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" placeholder="How should I call you?" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /><label htmlFor="message">What are you thinking?</label><textarea id="message" name="message" rows="4" placeholder="A little context about your project or idea..." required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /><button className="button button-primary form-submit" type="submit">Compose email <span>↗</span></button><p className="form-note">This opens your default email app with your message prepared.</p></form></div></div></section>
+      </main>
+      <footer className="site-footer"><a className="brand footer-brand" href="#home"><span className="brand-mark">K<span>.</span></span><span className="brand-name">kalpesh<span>.dev</span></span></a><span>Designed with care · Built with React</span><a href="#home" className="back-top">BACK TO TOP ↑</a><span className="copyright">© {new Date().getFullYear()} Kalpesh Chauhan</span></footer>
+    </div>
   );
 }
-
 export default App;
