@@ -43,7 +43,7 @@ function CursorDot({index, x, y}) {
     <motion.div
       className="swarm-cursor"
       style={{ x:sx, y:sy, color:colors[index], scale:1-index*.055 }}
-      animate={{ rotate:[0,360], x:[0,drift,0,-drift,0], y:[0,-drift,drift,0,0] }}
+      animate={{ rotate:[0,360] }}
       transition={{
         rotate:{ duration:4.5+index*.4, repeat:Infinity, ease:'linear' },
         x:{ duration:2.4+index*.2, repeat:Infinity, ease:'easeInOut' },
