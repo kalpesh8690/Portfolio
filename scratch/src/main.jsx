@@ -34,23 +34,71 @@ function Reveal({children, className='', delay=0, y=55, amount=0.18}) {
   )
 }
 
-function CursorDot({index, x, y}) {
-  const sx = useSpring(x, { stiffness:480-index*35, damping:30+index*2, mass:0.5+index*0.05 })
-  const sy = useSpring(y, { stiffness:480-index*35, damping:30+index*2, mass:0.5+index*0.05 })
-  const colors=['#72ffb5','#59e7ff','#b58cff','#ffbf6b','#8effee','#ff72c8','#a7ff5d']
-  const drift = 4 + index * 1.8
+function SwarmAgent({index, phase, target, color}) {
+  const angle = (index * Math.PI * 2) / 18
+  const radius = 22 + (index % 5) * 9
+  const orbitX = Math.cos(angle + phase) * radius
+  const orbitY = Math.sin(angle + phase) * radius
   return (
     <motion.div
-      className="swarm-cursor"
-      style={{ x:sx, y:sy, color:colors[index], scale:1-index*.055 }}
-      animate={{ rotate:[0,360] }}
+      className="swarm-agent"
+      style={{ '--agent': color }}
+      initial={{ x:0, y:0, opacity:0, scale:.3 }}
+      animate={{
+        x:[orbitX, target.x, target.x + Math.sin(index)*10],
+        y:[orbitY, target.y, target.y + Math.cos(index)*8],
+        opacity:[0,1,1,0],
+        scale:[.3,1,1,.7],
+        rotate:[0,index%2?12:-12,0]
+      }}
       transition={{
-        rotate:{ duration:4.5+index*.4, repeat:Infinity, ease:'linear' },
-        x:{ duration:2.4+index*.2, repeat:Infinity, ease:'easeInOut' },
-        y:{ duration:3+index*.15, repeat:Infinity, ease:'easeInOut' }
+        duration:5.8 + (index%4)*.35,
+        delay:index*.07,
+        ease:'easeInOut',
+        times:[0,.28,.82,1],
+        repeat:Infinity,
+        repeatDelay:1.2
       }}
     >
-      <b/><span/>
+      <span className="agent-cross"/>
+      <i>{['Ada','Linus','Grace','Alan','Ken','Radia','Guido'][index%7]}</i>
+    </motion.div>
+  )
+}
+
+function SwarmRebuildIntro() {
+  const reduced = useReducedMotion()
+  const [active,setActive] = useState(true)
+  useEffect(()=>{
+    if(reduced) { setActive(false); return }
+    const t=setTimeout(()=>setActive(false),7600)
+    return()=>clearTimeout(t)
+  },[reduced])
+  if(!active) return null
+
+  const targets=[
+    {x:-38,y:-30},{x:18,y:-20},{x:42,y:-5},{x:-25,y:18},{x:8,y:30},
+    {x:35,y:28},{x:-48,y:4},{x:-12,y:-5},{x:50,y:18},{x:-34,y:32},
+    {x:22,y:-35},{x:2,y:-45},{x:46,y:-28},{x:-45,y:-22},{x:32,y:4},
+    {x:-5,y:42},{x:52,y:38},{x:-52,y:28}
+  ]
+  const colors=['#F24E1E','#A259FF','#1ABCFE','#0ACF83','#FF7262','#FFC700','#9747FF','#E8467C','#14AE5C','#0D99FF','#FF8A00','#00B5CE']
+  return (
+    <motion.div className="swarm-intro" initial={{opacity:1}} animate={{opacity:1}} exit={{opacity:0}}>
+      <motion.div className="swarm-build-canvas" initial={{scale:.96}} animate={{scale:1}} transition={{duration:1.2,ease}}>
+        <div className="swarm-brand">KC<span>/</span>SWARM</div>
+        <motion.div className="build-crosshair" animate={{x:[-80,0,80,0],y:[0,-45,0,45,0]}} transition={{duration:4.5,repeat:Infinity,ease:'easeInOut'}}>
+          <span/><b/>
+        </motion.div>
+        {targets.map((target,index)=><SwarmAgent key={index} index={index} phase={index*.35} target={target} color={colors[index%colors.length]}/>)}
+        {[0,1,2,3,4,5].map(i=>(
+          <motion.div key={i} className={`build-line line-${i+1}`} initial={{scaleX:0,opacity:0}} animate={{scaleX:1,opacity:[0,1,.5]}} transition={{duration:1.1,delay:.6+i*.35,ease}}/>
+        ))}
+        <motion.div className="build-readout" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:1.1}}>
+          <span>SWARM BUILD</span><b>18 AGENTS</b><small>LIVE RECONSTRUCTION</small>
+        </motion.div>
+      </motion.div>
+      <motion.div className="swarm-progress" initial={{scaleX:0}} animate={{scaleX:1}} transition={{duration:7.1,ease:'linear'}}/>
     </motion.div>
   )
 }
@@ -60,27 +108,30 @@ function CursorSwarm() {
   const y = useMotionValue(-300)
   const reduced = useReducedMotion()
   const [visible,setVisible] = useState(false)
-
   useEffect(()=>{
     if(reduced) return
     let timer
-    const move = e => {
-      if(e.pointerType === 'touch') {
-        x.set(e.clientX); y.set(e.clientY); setVisible(true)
+    const move=e=>{
+      x.set(e.clientX); y.set(e.clientY); setVisible(true)
+      if(e.pointerType==='touch'){
         clearTimeout(timer)
         timer=setTimeout(()=>setVisible(false),700)
-        return
       }
-      x.set(e.clientX); y.set(e.clientY); setVisible(true)
     }
     window.addEventListener('pointermove',move,{passive:true})
-    return ()=>{ window.removeEventListener('pointermove',move); clearTimeout(timer) }
+    return()=>{window.removeEventListener('pointermove',move);clearTimeout(timer)}
   },[x,y,reduced])
-
   if(reduced || !visible) return null
-  return <div className="cursor-swarm" aria-hidden="true">{Array.from({length:7},(_,i)=><CursorDot key={i} index={i} x={x} y={y}/>)}</div>
+  return (
+    <div className="cursor-swarm" aria-hidden="true">
+      {Array.from({length:12},(_,i)=>{
+        const sx=useSpring(x,{stiffness:420-i*18,damping:28+i*1.5,mass:.55+i*.04})
+        const sy=useSpring(y,{stiffness:420-i*18,damping:28+i*1.5,mass:.55+i*.04})
+        return <motion.div key={i} className="swarm-cursor" style={{x:sx,y:sy,color:['#F24E1E','#A259FF','#1ABCFE','#0ACF83','#FF7262','#FFC700'][i%6],scale:1-i*.035}} animate={{rotate:[0,360]}} transition={{rotate:{duration:4+i*.25,repeat:Infinity,ease:'linear'}}}><b/><span/></motion.div>
+      })}
+    </div>
+  )
 }
-
 function ScrollProgress() {
   const { scrollYProgress } = useScroll()
   return <motion.div className="scroll-progress" style={{ scaleX:scrollYProgress, transformOrigin:'0% 50%' }}/>
