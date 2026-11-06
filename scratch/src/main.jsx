@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { motion, useMotionValue, useReducedMotion, useSpring, useTime, useTransform } from 'motion/react'
+import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import { ArrowDownRight, ArrowUpRight, Github, Linkedin, Mail, MoveUpRight, Terminal, Zap } from 'lucide-react'
 import './styles.css'
 
@@ -17,27 +17,16 @@ const socials = [
 ]
 
 function SwarmFollower({index, pointerX, pointerY}) {
-  const time = useTime()
-  const xSpring = useSpring(pointerX, { stiffness: 520 - index * 35, damping: 32 + index * 2, mass: 0.55 + index * 0.06 })
-  const ySpring = useSpring(pointerY, { stiffness: 520 - index * 35, damping: 32 + index * 2, mass: 0.55 + index * 0.06 })
-  const radius = 7 + index * 5
-  const angle = (index * Math.PI * 2) / 7
-
-  const x = useTransform(() => xSpring.get() + Math.cos(angle + time.get() * 0.0012) * radius)
-  const y = useTransform(() => ySpring.get() + Math.sin(angle + time.get() * 0.0012) * radius)
-
+  const x = useSpring(pointerX, { stiffness: 420 - index * 30, damping: 30 + index * 2, mass: 0.6 + index * 0.05 })
+  const y = useSpring(pointerY, { stiffness: 420 - index * 30, damping: 30 + index * 2, mass: 0.6 + index * 0.05 })
   const colors=['#72ffb5','#59e7ff','#b58cff','#ffbf6b','#8effee','#ff72c8','#a7ff5d']
 
   return (
     <motion.div
       className="swarm-cursor"
-      style={{
-        x,
-        y,
-        color: colors[index],
-        scale: 1 - index * 0.055,
-        opacity: 0.98 - index * 0.06,
-      }}
+      style={{ x, y, color: colors[index], scale: 1 - index * 0.055, opacity: 0.98 - index * 0.06 }}
+      animate={{ rotate: [0, 360] }}
+      transition={{ rotate: { duration: 5 + index * 0.45, repeat: Infinity, ease: 'linear' } }}
     >
       <b />
       <span />
