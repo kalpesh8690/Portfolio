@@ -103,6 +103,13 @@ function SwarmRebuildIntro() {
   )
 }
 
+function LiveCursor({index,x,y}) {
+  const sx=useSpring(x,{stiffness:420-index*18,damping:28+index*1.5,mass:.55+index*.04})
+  const sy=useSpring(y,{stiffness:420-index*18,damping:28+index*1.5,mass:.55+index*.04})
+  const colors=['#F24E1E','#A259FF','#1ABCFE','#0ACF83','#FF7262','#FFC700']
+  return <motion.div className="swarm-cursor" style={{x:sx,y:sy,color:colors[index%colors.length],scale:1-index*.035}} animate={{rotate:[0,360]}} transition={{rotate:{duration:4+index*.25,repeat:Infinity,ease:'linear'}}}><b/><span/></motion.div>
+}
+
 function CursorSwarm() {
   const x = useMotionValue(-300)
   const y = useMotionValue(-300)
@@ -122,15 +129,7 @@ function CursorSwarm() {
     return()=>{window.removeEventListener('pointermove',move);clearTimeout(timer)}
   },[x,y,reduced])
   if(reduced || !visible) return null
-  return (
-    <div className="cursor-swarm" aria-hidden="true">
-      {Array.from({length:12},(_,i)=>{
-        const sx=useSpring(x,{stiffness:420-i*18,damping:28+i*1.5,mass:.55+i*.04})
-        const sy=useSpring(y,{stiffness:420-i*18,damping:28+i*1.5,mass:.55+i*.04})
-        return <motion.div key={i} className="swarm-cursor" style={{x:sx,y:sy,color:['#F24E1E','#A259FF','#1ABCFE','#0ACF83','#FF7262','#FFC700'][i%6],scale:1-i*.035}} animate={{rotate:[0,360]}} transition={{rotate:{duration:4+i*.25,repeat:Infinity,ease:'linear'}}}><b/><span/></motion.div>
-      })}
-    </div>
-  )
+  return <div className="cursor-swarm" aria-hidden="true">{Array.from({length:12},(_,i)=><LiveCursor key={i} index={i} x={x} y={y}/>)}</div>
 }
 function ScrollProgress() {
   const { scrollYProgress } = useScroll()
